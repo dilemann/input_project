@@ -8,72 +8,60 @@ const button = document.querySelector(".submit");
 const parentList = document.querySelector("ul");
 const titleList = document.querySelector(".title_info");
 const listContainer = document.querySelector(".list_container");
+const title = document.querySelector("h3");
 const liArray = [];
 
-form.addEventListener('submit', onSubmit);
 
-function onSubmit(event) {
+
+//  form submission event
+function onSubmit(event) 
+{
     event.preventDefault();
-
-    outputData(); 
+    outputData();
     changeInputType();
-    
     form.reset();
-
-    if (input.getAttribute("name") === "End") {
-        addSavedData();
-        //  titleList.innerHTML = '';
-    
-        // Показать инпут и установить начальное сообщение
-        input.setAttribute('type', 'text');
-        input.setAttribute('name', 'Name');
-        input.placeholder = 'your name';
-        inputMessage.innerHTML = 'Enter your name';
-        titleList.innerHTML = "Your personal information:";
-        
-    }
-
- 
-
 }
 
 
-
-
-function outputData() {
-    if(input.getAttribute("name") == "Name") 
-    {
-        liArray.push(titleList);  
+// Input-Ausgang
+function outputData() 
+{
+    if(input.getAttribute("name") === "Name")  
+    {    
+        const titleList = document.createElement("p");
+        title.style.opacity= 0;
+        console.log(title);
+        titleList.innerHTML = `${input.value}'s personal information:`; 
+        liArray.push(titleList);
+        parentList.append(titleList);
     }
     const li = document.createElement("li");
     li.innerHTML = `<span class="lititle">${input.getAttribute("name")}:</span>  ${input.value}  `;
-    parentList.append(li);
-    liArray.push(li);
-    
-    
+    liArray.push(li); 
+    parentList.append(li);   
 }
 
-function addSavedData() {
-  
-    for (let i = 0; i < liArray.length; i++) {
-      listContainer.append(liArray[i]); // добавляем каждый li в родительский ul
-    }
-    console.log(liArray);
+
+function addSavedData() 
+{
+    const div = document.createElement("div");
+    for (let i = 0; i < liArray.length; i++)  div.append(liArray[i]); // добавляем каждый li в родительский ul
+    listContainer.append(div);
     liArray.length = 0;
-  }
+   
+}
 
 
 
-
-function changeInputType() {
+function changeInputType() 
+{
     switch(input.getAttribute("name"))
     {
         case "Name": 
-            titleList.innerHTML = `${input.value}'s personal information:`; 
+            
             input.setAttribute("type", "date"); 
             input.setAttribute("name", "Date of birth");
             inputMessage.innerHTML = "Enter date of birth";
-            
             break;
 
         case "Date of birth":
@@ -91,10 +79,17 @@ function changeInputType() {
             break;
 
         case "Hobby":
-            input.setAttribute("type", "text"); 
-            input.setAttribute("name", "End");
-            break;
-           
+            title.style.opacity= 1;
+            addSavedData();
+            input.setAttribute('type', 'text');
+            input.setAttribute('name', 'Name');
+            input.placeholder = 'your name';
+            inputMessage.innerHTML = 'Enter your name';
+            break; 
+            
     }
 }
 
+
+
+form.addEventListener('submit', onSubmit);
